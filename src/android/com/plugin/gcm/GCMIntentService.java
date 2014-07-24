@@ -71,6 +71,17 @@ public class GCMIntentService extends GCMBaseIntentService {
 			else {
 				extras.putBoolean("foreground", false);
 
+				//fix for kinvey
+				if(extras.getString("msg")!=null){
+					try {
+						JSONObject json2 = new JSONObject(extras.getString("msg"));
+						extras.putString("message", json2.get("message").toString());
+						extras.putString("title", json2.get("title").toString());
+					}
+					catch (Exception ejson) {
+					}
+				}
+
                 // Send a notification if there is a message
                 if (extras.getString("message") != null && extras.getString("message").length() != 0) {
                     createNotification(context, extras);
